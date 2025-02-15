@@ -1,0 +1,8 @@
+flask
+flask-cors
+flask-sqlalchemy
+requests
+openai  # If using OpenAI API
+pandas  # For data handling
+numpy   # For any mathematical operations
+scipy   # Optimization for scheduling
