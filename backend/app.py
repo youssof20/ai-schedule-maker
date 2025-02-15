@@ -105,6 +105,38 @@ def generate_timetable():
     
     return jsonify({"timetable": timetable})
 
+from flask import Flask, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+from models import db, Task  # Import the models
+
+app = Flask(__name__)
+CORS(app)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
+# Create database tables before the first request
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+@app.route("/add_task", methods=["POST"])
+def add_task():
+    data = request.json
+    task = Task(name=data["name"], priority=data["priority"], duration=data["duration"])
+    db.session.add(task)
+    db.session.commit()
+    return jsonify({"message": "Task added successfully"}), 201
+
+@app.route("/get_tasks", methods=["GET"])
+def get_tasks():
+    tasks = Task.query.all()
+    return jsonify([task.to_dict() for task in tasks])
+
 if __name__ == "__main__":
     app.run(debug=True)
+
 
