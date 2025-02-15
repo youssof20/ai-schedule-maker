@@ -35,6 +35,13 @@ flask run
 cd ../frontend
 npm install
 ```
+
+
+### 4. Database Setup
+#### Install Dependencies
+```sh
+python -c "from backend.app import db, app; with app.app_context(): db.create_all()"
+```
 #### Start the Frontend
 ```sh
 npm run dev
